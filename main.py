@@ -50,18 +50,19 @@ def send_mail():
 def fetch_mail():
     content=request.get_json()
     email=content['email']
-    query_result = MailPhishingDetector.query.filter_by(receiver=email).all()
+    query_result = MailPhishingDetector.query.filter_by(sender=email).all()
     # loop through the query result and print the email and subject for each record
     result=[]
     for message in query_result:
         email_dict = {
         'email': message.mail,
-        'receiver': message.receiver,
+        'sender': message.sender,
         'name': message.subject ,
-        'flag':message.flaged,
+        'flag':str(message.flaged),
         'subject':message.subject
     }
-    result.append(email_dict)
+        print(message)
+        result.append(email_dict)
     return jsonify({'emails':result})
     
     
